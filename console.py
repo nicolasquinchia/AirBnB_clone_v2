@@ -19,16 +19,16 @@ class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) ' if sys.__stdin__.isatty() else ''
 
     classes = {
-               'BaseModel': BaseModel, 'User': User, 'Place': Place,
-               'State': State, 'City': City, 'Amenity': Amenity,
-               'Review': Review
-              }
+        'BaseModel': BaseModel, 'User': User, 'Place': Place,
+        'State': State, 'City': City, 'Amenity': Amenity,
+        'Review': Review
+    }
     dot_cmds = ['all', 'count', 'show', 'destroy', 'update']
     types = {
-             'number_rooms': int, 'number_bathrooms': int,
-             'max_guest': int, 'price_by_night': int,
-             'latitude': float, 'longitude': float
-            }
+        'number_rooms': int, 'number_bathrooms': int,
+        'max_guest': int, 'price_by_night': int,
+        'latitude': float, 'longitude': float
+    }
 
     def preloop(self):
         """Prints if isatty is false"""
@@ -73,7 +73,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] is '{' and pline[-1] is'}'\
+                    if pline[0] is '{' and pline[-1] is '}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -113,15 +113,49 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
+    @staticmethod
+    def args_parser_create(args):
+        """Static method that parse the args
+        from create method to update the instance
+        Args:
+            args ([str]): Args input from create
+        Returns:
+            [str, dic]: Classname and dictionary with attributes
+        """
+        args = args.split()
+        tmp_cls = args.pop(0)
+        parms_dic = {}
+        for arg in args:
+            key, value = arg.split("=")
+            if value[0] == '"' and value[-1] == '"':
+                uq_value = value[1:-1]
+                for index in range(len(uq_value)):
+                    if uq_value[index] == '"' and uq_value[index - 1] != "\\":
+                        uq_value.replace('"', '\\"')
+                    elif uq_value[index] == '_':
+                        uq_value.replace('_', ' ')
+                parms_dic[key] = uq_value
+            else:
+                try:
+                    parms_dic[key] = int(value)
+                except:
+                    try:
+                        parms_dic[key] = float(value)
+                    except:
+                        pass
+        return tmp_cls, parms_dic
+
     def do_create(self, args):
         """ Create an object of any class"""
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        args, args_dic = self.args_parser_create(args)
+        if args not in HBNBCommand.classes:
             print("** class doesn't exist")
             return
         new_instance = HBNBCommand.classes[args]()
+        new_instance.__dict__.update(args_dic)
         storage.save()
         print(new_instance.id)
         storage.save()
@@ -293,6 +327,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
