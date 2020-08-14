@@ -46,8 +46,7 @@ class DBStorage():
     def new(self, obj):
         """new
         """
-        if obj:
-            self.__session.add(obj)
+        self.__session.add(obj)
 
     def save(self):
         """save
@@ -59,7 +58,6 @@ class DBStorage():
         """
         if obj:
             self.__session.delete(obj)
-            self.save()
 
     def reload(self):
         """reload
