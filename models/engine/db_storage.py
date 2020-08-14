@@ -17,10 +17,10 @@ class DBStorage():
         """
         self.__engine = create_engine(
             'mysql+mysqldb://{}:{}@{}:3306/{}'
-            .format(getenv('HBNB_MYSQL_USER'),
-                    getenv('HBNB_MYSQL_PWD'),
-                    getenv('HBNB_MYSQL_HOST'),
-                    getenv('HBNB_MYSQL_DB')),
+            .format(getenv("HBNB_MYSQL_USER"),
+                    getenv("HBNB_MYSQL_PWD"),
+                    getenv("HBNB_MYSQL_HOST"),
+                    getenv("HBNB_MYSQL_DB")),
             pool_pre_ping=True
         )
 
@@ -41,7 +41,7 @@ class DBStorage():
         else:
             for cls in classes:
                 lili += self.__session.query(cls)
-        return {type(c).__name__ + '.' + c.id: c for c in lili}
+        return {type(c).__name__ + "." + c.id: c for c in lili}
 
     def new(self, obj):
         """new
@@ -70,7 +70,8 @@ class DBStorage():
         from models.amenity import Amenity
         from models.place import Place
         from models.review import Review
-        if getenv('HBNB_ENV') == 'test':
+
+        if getenv('HBNB_ENV') == "test":
             Base.metadata.drop_all(self.__engine)
         Base.metadata.create_all(self.__engine)
         sess = sessionmaker(bind=self.__engine, expire_on_commit=False)
