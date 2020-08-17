@@ -10,7 +10,7 @@ from datetime import datetime
 def do_pack():
     """COmpresses
     """
-    filename = 'web_static_' + datetime.now().strftime('%Y%M%D%H%M%S') + '.tgz'
+    filename = 'web_static_' + datetime.now().strftime('%Y%m%d%H%M%S') + '.tgz'
     try:
         if not os.path.isdir('versions'):
             local('mkdir versions')
