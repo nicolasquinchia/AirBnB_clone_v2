@@ -2,7 +2,7 @@
 """Meh
 """
 
-import fabric.operations import local, run
+from fabric.operations import local, run
 import os
 from datetime import datetime
 
@@ -14,7 +14,7 @@ def do_pack():
     try:
         if not os.path.isdir('versions'):
             local('mkdir versions')
-        
+
         return local('tar -cvzf versions/{} web_static'.format(filename))
     except Exception:
         return None
