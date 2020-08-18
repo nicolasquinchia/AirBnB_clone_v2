@@ -32,6 +32,7 @@ def do_deploy(archive_path):
     run("rm -rf {}/web_static".format(untar))
     run("rm -rf /data/web_static/current")
     run("ln -s {} /data/web_static/current".format(untar))
+    return True
 
 
 def do_pack():
