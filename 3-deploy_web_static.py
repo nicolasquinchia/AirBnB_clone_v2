@@ -12,6 +12,19 @@ env.hosts = ['34.75.178.156', '35.231.231.185']
 env.user = 'ubuntu'
 
 
+def do_pack():
+    """COmpresses
+    """
+    filename = 'web_static_' + datetime.now().strftime('%Y%m%d%H%M%S') + '.tgz'
+    try:
+        if not os.path.isdir('versions'):
+            local('mkdir versions')
+
+        return local('tar -cvzf versions/{} web_static'.format(filename))
+    except Exception:
+        return None
+
+
 def do_deploy(archive_path):
     """
     blahhh
@@ -35,23 +48,10 @@ def do_deploy(archive_path):
     return True
 
 
-def do_pack():
-    """COmpresses
-    """
-    filename = 'web_static_' + datetime.now().strftime('%Y%m%d%H%M%S') + '.tgz'
-    try:
-        if not os.path.isdir('versions'):
-            local('mkdir versions')
-
-        return local('tar -cvzf versions/{} web_static'.format(filename))
-    except Exception:
-        return None
-
-
 def deploy():
     """Caller function
     """
-    pack = do_pack()
-    if pack:
-        return do_deploy(pack)
-    return False
+    p = do_pack()
+    if not p:
+        return False
+    return do_deploy(p)
