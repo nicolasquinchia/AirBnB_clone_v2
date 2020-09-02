@@ -25,13 +25,9 @@ def lists(id=None):
             single = lili['State.' + id]
             return render_template('9-states.html', single=single)
         except KeyError:
-            return render_template('9-states.html', single=None)
+            return render_template('9-states.html', single=1)
     else:
-        lili = list(lili.values())
-        if lili:
-            return render_template('9-states.html', states=lili)
-        else:
-            return render_template('9-states.html', states=[])
+        return render_template('9-states.html', states=list(lili.values()))
 
 if __name__ == '__main__':
     storage.reload()

@@ -4,14 +4,14 @@
 		<TITLE>HBNB</TITLE>
 	</HEAD>
 	<BODY>
-	{% if states != None %}
+	{% if not single %}
 		<H1>States</H1>
 		<UL>
 		{% for state in states|sort(attribute='name') %}
 			<LI>{{ state.id }}: <B>{{ state.name }}</B></LI>
 		{% endfor %}
 		</UL>
-	{% elif single %}
+	{% elif single != 1%}
 		<H1>State: {{ single.name }}</H1>
 		<H3>Cities:</H3>
 		<UL>
