@@ -36,9 +36,9 @@ def display_text_C(text):
     return "C {}".format(text.replace('_', ' '))
 
 
-@app.route('/python', defaults={'text': 'is cool'}, strict_slashes=False)
+@app.route('/python', strict_slashes=False)
 @app.route('/python/<text>', strict_slashes=False)
-def display_text_pythonic(text):
+def display_text_pythonic(text='is cool'):
     """Method that returns "Python <text>
 
     Args:
